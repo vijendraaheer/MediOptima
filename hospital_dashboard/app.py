@@ -22,11 +22,12 @@ pio.templates.default = "plotly_white"
 load_dotenv()
 
 # ================= AI MODULE =================
-sys.path.append(r'D:\MY PROJECTS\MediOptima\ml_models\AI Insight Generator')
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(os.path.join(BASE_DIR, '..', 'ml_models', 'ai_insights'))
 from AI_Insights import generate_insight
 
 app = Flask(__name__)
-app.secret_key = "medioptima_secure_key"
+app.secret_key = os.getenv("SECRET_KEY", "dev_key")
 
 # ================= DATABASE =================
 db = mysql.connector.connect(
@@ -40,21 +41,30 @@ db = mysql.connector.connect(
 cursor = db.cursor(dictionary=True)
 
 # ================= LOAD DATA =================
-old = pd.read_csv(r'D:\MY PROJECTS\MediOptima\data\processed\clean_hospital_data.csv')
-pred = pd.read_csv(r'D:\MY PROJECTS\MediOptima\data\outputs\Prediction.csv')
-bed = pd.read_csv(r'D:\MY PROJECTS\MediOptima\data\outputs\Bed_Requirement.csv')
-staff = pd.read_csv(r'D:\MY PROJECTS\MediOptima\data\outputs\Optimized_Staff.csv')
-risk = pd.read_csv(r'D:\MY PROJECTS\MediOptima\data\outputs\Surge_Outbreak_Alerts.csv')
+def load_data():
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-for dataset in [old, pred, bed, staff, risk]:
-    dataset['Date'] = pd.to_datetime(dataset['Date'])
+    def path(file):
+        return os.path.join(BASE_DIR, '..', 'data', file)
 
-df = pred.merge(bed, on='Date', how='left') \
-         .merge(staff, on='Date', how='left') \
-         .merge(risk, on='Date', how='left')
-         
+    old = pd.read_csv(path('processed/clean_hospital_data.csv'))
+    pred = pd.read_csv(path('outputs/Prediction.csv'))
+    bed = pd.read_csv(path('outputs/Bed_Requirement.csv'))
+    staff = pd.read_csv(path('outputs/Optimized_Staff.csv'))
+    risk = pd.read_csv(path('outputs/Surge_Outbreak_Alerts.csv'))
 
-df = df.loc[:, ~df.columns.duplicated()]
+    for dataset in [old, pred, bed, staff, risk]:
+        dataset['Date'] = pd.to_datetime(dataset['Date'])
+
+    df = pred.merge(bed, on='Date', how='left') \
+             .merge(staff, on='Date', how='left') \
+             .merge(risk, on='Date', how='left')
+
+    df = df.loc[:, ~df.columns.duplicated()]
+
+    return old, df
+
+old, df = load_data()
 
 # ================= ROLE DECORATOR =================
 def role_required(roles):
