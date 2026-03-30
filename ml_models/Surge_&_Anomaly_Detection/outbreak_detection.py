@@ -26,4 +26,4 @@ df['Outbreak_Alert'] = df['Outbreak'].apply(lambda x: "YES" if x == -1 else "NO"
 # Save results
 df.to_csv("ml_models/Surge & Anomaly Detection/outbreak_alert.csv", index=False)
 
-print(" Outbreak detection completed. CSV saved at 'Surge & Anomaly Detection/outbreak_alert.csv'")
+print(" Outbreak detection completed.")
