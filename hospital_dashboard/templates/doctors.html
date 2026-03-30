@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="table-container">
+
+<h2>Staff Requirements (Last 30 Days)</h2>
+
+{% if data %}
+
+<table>
+
+<thead>
+<tr>
+{% for col in data[0].keys() %}
+<th>{{ col.replace("_"," ") }}</th>
+{% endfor %}
+</tr>
+</thead>
+
+<tbody>
+
+{% for row in data %}
+<tr>
+
+{% for value in row.values() %}
+<td>{{ value }}</td>
+{% endfor %}
+
+</tr>
+{% endfor %}
+
+</tbody>
+
+</table>
+
+{% else %}
+
+<p>No staff requirement data available.</p>
+
+{% endif %}
+
+</div>
+
+{% endblock %}

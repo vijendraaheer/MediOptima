@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="table-container">
+
+<h2>System Settings</h2>
+
+<form method="POST">
+
+<label>Hospital Name</label>
+<input type="text" name="hospital_name" value="MedCare">
+
+<br><br>
+
+<label>Maximum Beds</label>
+<input type="number" name="max_beds" value="500">
+
+<br><br>
+
+<label>Doctor Cost Per Day</label>
+<input type="number" name="doctor_cost" value="1000">
+
+<br><br>
+
+<label>General Nurse Cost</label>
+<input type="number" name="nurse_cost" value="500">
+
+<br><br>
+
+<label>ICU Nurse Cost</label>
+<input type="number" name="icu_nurse_cost" value="800">
+
+<br><br>
+
+<button type="submit">Save Settings</button>
+
+</form>
+
+</div>
+
+{% endblock %}

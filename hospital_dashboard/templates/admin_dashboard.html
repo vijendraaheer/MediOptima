@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- DATE FILTER -->
+<div class="table-container">
+<form method="POST" style="display:flex; gap:10px; align-items:center;">
+<label><b>Select Date:</b></label>
+<input type="date" name="date" value="{{ selected_date }}">
+<button type="submit">Load</button>
+</form>
+</div>
+
+
+<!-- KPI CARDS -->
+<div class="cards">
+
+{% for k,v in admin_kpis.items() %}
+<div class="card">
+<h3>{{k}}</h3>
+<p>{{v}}</p>
+</div>
+{% endfor %}
+
+</div>
+
+
+<!-- COST CARDS -->
+<div class="cards">
+
+<div class="card">
+<h3>Daily Cost</h3>
+<p>₹ {{daily_cost}}</p>
+</div>
+
+<div class="card">
+<h3>Weekly Cost</h3>
+<p>₹ {{weekly_cost}}</p>
+</div>
+
+<div class="card">
+<h3>Monthly Cost</h3>
+<p>₹ {{monthly_cost}}</p>
+</div>
+
+</div>
+
+
+<!-- ALERTS -->
+{% if bed_alert %}
+<div class="alert alert-warning">
+⚠ {{bed_alert}}
+</div>
+{% endif %}
+
+{% if icu_alert %}
+<div class="alert alert-critical">
+🚨 {{icu_alert}}
+</div>
+{% endif %}
+
+
+<!-- CHART -->
+<div class="chart-container">
+{{ graph|safe }}
+</div>
+
+
+<!-- PENDING USERS -->
+<div class="table-container" id="pending-users">
+
+<h2>Pending Users</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>Name</th>
+<th>Email</th>
+<th>Role</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for user in pending %}
+
+<tr>
+<td>{{user.name}}</td>
+<td>{{user.email}}</td>
+<td>{{user.role}}</td>
+
+<td style="display:flex; gap:10px;">
+
+<a href="/approve/{{user.id}}" style="color:green;font-weight:600;">
+Approve
+</a>
+
+<a href="/cancel/{{user.id}}" style="color:red;font-weight:600;">
+Cancel
+</a>
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<!-- APPROVED USERS -->
+<div class="table-container">
+
+<h2>Approved Users</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>Name</th>
+<th>Email</th>
+<th>Role</th>
+</tr>
+</thead>
+
+<tbody>
+
+{% for user in approved %}
+
+<tr>
+<td>{{user.name}}</td>
+<td>{{user.email}}</td>
+<td>{{user.role}}</td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<!-- AI INSIGHTS -->
+<div class="table-container">
+
+<h2>AI Insights</h2>
+
+<p style="line-height:1.6;">
+{{report}}
+</p>
+
+</div>
+
+
+<!-- DOWNLOAD REPORT -->
+<div style="margin-top:20px;">
+<a href="/download_report" style="
+background:#1a3e7a;
+color:white;
+padding:10px 20px;
+text-decoration:none;
+border-radius:6px;
+font-weight:600;
+">
+Download Report
+</a>
+</div>
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- DATE FILTER -->
+<div class="table-container">
+<form method="POST" style="display:flex; gap:10px; align-items:center;">
+<label><b>Select Date:</b></label>
+<input type="date" name="date" value="{{ selected_date }}">
+<button type="submit">Load</button>
+</form>
+</div>
+
+
+<!-- STAFF KPI CARDS -->
+<div class="cards">
+
+{% for k,v in staff_kpis.items() %}
+
+<div class="card">
+<h3>{{k}}</h3>
+<p>{{v}}</p>
+</div>
+
+{% endfor %}
+
+</div>
+
+
+<!-- FORECAST GRAPH -->
+<div class="chart-container">
+
+{{ graph|safe }}
+
+</div>
+
+
+<!-- AI INSIGHTS -->
+<div class="table-container">
+
+<h2>AI Insight</h2>
+
+<p style="line-height:1.6;">
+{{report}}
+</p>
+
+</div>
+
+{% endblock %}

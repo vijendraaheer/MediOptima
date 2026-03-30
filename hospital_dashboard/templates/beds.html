@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="table-container">
+
+<h2>Bed Details (Last 30 Days)</h2>
+
+{% if data %}
+
+<table>
+
+<thead>
+<tr>
+{% for col in data[0].keys() %}
+<th>{{ col.replace("_"," ") }}</th>
+{% endfor %}
+</tr>
+</thead>
+
+<tbody>
+
+{% for row in data %}
+<tr>
+
+{% for value in row.values() %}
+
+{% if value == True %}
+<td style="color:red; font-weight:bold;">⚠ Yes</td>
+
+{% elif value == False %}
+<td style="color:green;">No</td>
+
+{% else %}
+<td>{{ value }}</td>
+
+{% endif %}
+
+{% endfor %}
+
+</tr>
+{% endfor %}
+
+</tbody>
+
+</table>
+
+{% else %}
+
+<p>No bed data available.</p>
+
+{% endif %}
+
+</div>
+
+{% endblock %}
